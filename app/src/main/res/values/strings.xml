@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WheelHelpYou</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
