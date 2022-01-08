@@ -2,8 +2,10 @@ package org.techtown.wheelhelpyou
 
 import android.animation.ObjectAnimator
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -65,12 +67,18 @@ GoogleMap.OnMyLocationClickListener{
 
         // 플로팅 버튼 클릭 이벤트 - 전화
         binding.fabCall.setOnClickListener {
-            Toast.makeText(this, "긴급 전화 연결!", Toast.LENGTH_SHORT).show()
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:119"))
+            startActivity(intent)
+
         }
 
         // 플로팅 버튼 클릭 이벤트 - 메세지
         binding.fabMessage.setOnClickListener {
-            Toast.makeText(this, "긴급 메세지 전송!", Toast.LENGTH_SHORT).show()
+            val inputPhoneNum = "01000000000"
+            val myUri = Uri.parse("smsto:${inputPhoneNum}")
+            val myIntent = Intent(Intent.ACTION_SENDTO, myUri)
+            myIntent.putExtra("sms_body", "긴급 메시지. 바로 전화 걸어주세요.")
+            startActivity(myIntent)
         }
 
     }
