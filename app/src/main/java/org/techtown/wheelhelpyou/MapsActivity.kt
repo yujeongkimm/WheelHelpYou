@@ -1,14 +1,19 @@
 package org.techtown.wheelhelpyou
 
+import android.animation.ObjectAnimator
+import kotlinx.android.synthetic.main.activity_maps.*
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,14 +29,14 @@ GoogleMap.OnMyLocationClickListener{
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private var MY_LOCATION_REQUEST_CODE = 1
+    private var isFabOpen = false
 
-    private var info_list = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -54,9 +59,21 @@ GoogleMap.OnMyLocationClickListener{
             }
         }
 
-        // 정보 list
-        info_list.add("영업시간")
-        info_list.add("dlfkjalkdfjlaksdjflkdsajflk")
+        // 플로팅 버튼 클릭시 에니메이션 동작 기능
+        fabMain.setOnClickListener {
+            toggleFab()
+        }
+
+        // 플로팅 버튼 클릭 이벤트 - 전화
+        fabCall.setOnClickListener {
+            Toast.makeText(this, "긴급 전화 연결!", Toast.LENGTH_SHORT).show()
+        }
+
+        // 플로팅 버튼 클릭 이벤트 - 메세지
+        fabMessage.setOnClickListener {
+            Toast.makeText(this, "긴급 메세지 전송!", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -128,6 +145,29 @@ GoogleMap.OnMyLocationClickListener{
         Toast.makeText(this,"Current location:\n" + p0, Toast.LENGTH_LONG).show();
     }
 
+    // 플로팅 액션 버튼 클릭시 동작하는 애니메이션 효과 세팅
+    private fun toggleFab() {
+        Toast.makeText(this, "메인 플로팅 버튼 클릭 : $isFabOpen", Toast.LENGTH_SHORT).show()
 
+        // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션 세팅
+        if (isFabOpen) {
+
+            ObjectAnimator.ofFloat(fabCall, "translationY", 0f).apply { start() }
+            ObjectAnimator.ofFloat(fabMessage, "translationY", 0f).apply { start() }
+            fabMain.setImageResource(R.drawable.ic_fabmain)
+
+            // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션 세팅
+        } else {
+            fabCall.visibility = View.VISIBLE
+            fabMessage.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(fabCall, "translationY", -200f).apply { start() }
+            ObjectAnimator.ofFloat(fabMessage, "translationY", -350f).apply { start() }
+            fabMain.setImageResource(R.drawable.ic_minimize)
+        }
+
+        isFabOpen = !isFabOpen
+
+    }
 
 }
+
