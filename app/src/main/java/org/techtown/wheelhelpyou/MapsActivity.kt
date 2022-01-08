@@ -1,7 +1,6 @@
 package org.techtown.wheelhelpyou
 
 import android.animation.ObjectAnimator
-import kotlinx.android.synthetic.main.activity_maps.*
 import android.Manifest
 import android.content.pm.PackageManager
 import android.location.Location
@@ -60,17 +59,17 @@ GoogleMap.OnMyLocationClickListener{
         }
 
         // 플로팅 버튼 클릭시 에니메이션 동작 기능
-        fabMain.setOnClickListener {
+        binding.fabMain.setOnClickListener {
             toggleFab()
         }
 
         // 플로팅 버튼 클릭 이벤트 - 전화
-        fabCall.setOnClickListener {
+        binding.fabCall.setOnClickListener {
             Toast.makeText(this, "긴급 전화 연결!", Toast.LENGTH_SHORT).show()
         }
 
         // 플로팅 버튼 클릭 이벤트 - 메세지
-        fabMessage.setOnClickListener {
+        binding.fabMessage.setOnClickListener {
             Toast.makeText(this, "긴급 메세지 전송!", Toast.LENGTH_SHORT).show()
         }
 
@@ -152,17 +151,17 @@ GoogleMap.OnMyLocationClickListener{
         // 플로팅 액션 버튼 닫기 - 열려있는 플로팅 버튼 집어넣는 애니메이션 세팅
         if (isFabOpen) {
 
-            ObjectAnimator.ofFloat(fabCall, "translationY", 0f).apply { start() }
-            ObjectAnimator.ofFloat(fabMessage, "translationY", 0f).apply { start() }
-            fabMain.setImageResource(R.drawable.ic_fabmain)
+            ObjectAnimator.ofFloat(binding.fabCall, "translationY", 0f).apply { start() }
+            ObjectAnimator.ofFloat(binding.fabMessage, "translationY", 0f).apply { start() }
+            binding.fabMain.setImageResource(R.drawable.ic_fabmain)
 
             // 플로팅 액션 버튼 열기 - 닫혀있는 플로팅 버튼 꺼내는 애니메이션 세팅
         } else {
-            fabCall.visibility = View.VISIBLE
-            fabMessage.visibility = View.VISIBLE
-            ObjectAnimator.ofFloat(fabCall, "translationY", -200f).apply { start() }
-            ObjectAnimator.ofFloat(fabMessage, "translationY", -350f).apply { start() }
-            fabMain.setImageResource(R.drawable.ic_minimize)
+            binding.fabCall.visibility = View.VISIBLE
+            binding.fabMessage.visibility = View.VISIBLE
+            ObjectAnimator.ofFloat(binding.fabCall, "translationY", -200f).apply { start() }
+            ObjectAnimator.ofFloat(binding.fabMessage, "translationY", -350f).apply { start() }
+            binding.fabMain.setImageResource(R.drawable.ic_minimize)
         }
 
         isFabOpen = !isFabOpen
